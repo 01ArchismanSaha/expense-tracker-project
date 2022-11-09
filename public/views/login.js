@@ -1,34 +1,31 @@
-const myForm = document.getElementById('sign-up-form');
+const myForm = document.getElementById('log-in-form');
 
 myForm.addEventListener('submit', async(e) => {
     e.preventDefault();
     
-    const name = document.getElementById('name').value;
+    // const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
     try {
-        const res = await axios.post('http://localhost:4000/user/sign-up', 
+        const res = await axios.post('http://localhost:4000/user/login', 
         {
-            name: name, 
             email: email, 
             password: password
         }
         );
-        console.log('SIGN UP RESPONSE: ', res);
-        if(res.status === 200){
-            name = '';
-            email = '';
-            password = '';
+        console.log('LOGIN RESPONSE: ', res);
+        if(res.status === 200) {
             clearError();
+            confirm('User logged in successfully!');
         }
         
     } catch (error) {
-        logErrorToUser(error);
-        if(error.response.status === 400) {
-            alert('User already exists!');
-        }
         console.log(error);
+        logErrorToUser(error);
+        if(error.response.status === 401) {
+            alert('Password is incorrect!');
+        }
     }
 });
 
