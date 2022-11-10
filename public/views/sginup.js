@@ -3,23 +3,23 @@ const myForm = document.getElementById('sign-up-form');
 myForm.addEventListener('submit', async(e) => {
     e.preventDefault();
     
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+    const name = document.getElementById('name');
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
 
     try {
         const res = await axios.post('http://localhost:4000/user/sign-up', 
         {
-            name: name, 
-            email: email, 
-            password: password
+            name: name.value, 
+            email: email.value, 
+            password: password.value
         }
         );
         console.log('SIGN UP RESPONSE: ', res);
         if(res.status === 200){
-            name = '';
-            email = '';
-            password = '';
+            name.value = '';
+            email.value = '';
+            password.value = '';
             clearError();
         }
         
