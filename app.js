@@ -7,6 +7,7 @@ dotenv.config();
 const User = require('./models/user');
 
 const userRoutes = require('./routes/user');
+const expenseRoutes = require('./routes/expense');
 
 const data_base = require('./util/database');
 
@@ -16,6 +17,7 @@ app.use(body_parser.json());
 app.use(cors());
 
 app.use('/user', userRoutes);
+app.use('/expense', expenseRoutes);
 
 // data_base.sync({force: true})
 data_base.sync()

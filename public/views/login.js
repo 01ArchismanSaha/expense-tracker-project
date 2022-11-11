@@ -1,11 +1,10 @@
 const myForm = document.getElementById('log-in-form');
+// const name = document.getElementById('name');
+const email = document.getElementById('email');
+const password = document.getElementById('password');
 
-myForm.addEventListener('submit', async(e) => {
+myForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    
-    // const name = document.getElementById('name');
-    const email = document.getElementById('email');
-    const password = document.getElementById('password');
 
     try {
         const res = await axios.post('http://localhost:4000/user/login', 
@@ -20,6 +19,7 @@ myForm.addEventListener('submit', async(e) => {
             email.value = '';
             password.value = '';
             confirm('User logged in successfully!');
+            window.location.href = 'tracker.html';
         }
         
     } catch (error) {
