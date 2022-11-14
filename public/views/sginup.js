@@ -21,6 +21,7 @@ myForm.addEventListener('submit', async(e) => {
             email.value = '';
             password.value = '';
             clearError();
+            window.location.href = 'login.html';
         }
         
     } catch (error) {

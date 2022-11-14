@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const { regexpToText } = require('nodemon/lib/utils');
 const saltRounds = 10;
 
@@ -48,7 +49,12 @@ exports.logUser = (req, res, next) => {
                         return res.status(500).json({success: false, message: err});
                     }
                     if(result == true) {
-                        res.status(200).json({success: true, message: 'user found'});
+                        const token = jwt.sign({userId: user.id, name: user.name}, 'archie_jwt_secret_key');
+                        res.status(200).json({
+                            success: true, 
+                            message: 'user found',
+                            token: token
+                        });
                     } else {
                         res.status(401).json({success: false, message: 'password is incorrect'});
                     }

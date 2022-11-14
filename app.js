@@ -5,6 +5,10 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const User = require('./models/user');
+const Expense = require('./models/expense');
+
+User.hasMany(Expense);
+Expense.belongsTo(User);
 
 const userRoutes = require('./routes/user');
 const expenseRoutes = require('./routes/expense');

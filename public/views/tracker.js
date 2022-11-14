@@ -14,6 +14,11 @@ trackerFrom.addEventListener('submit', async(e) => {
             amount: amount.value,
             description: description.value,
             category: category.value
+        },
+        {
+            headers: {
+                'Authorization': localStorage.getItem('token')
+            }
         });
     
         const expenses = await fetchExpensesFromBackend();
@@ -35,7 +40,11 @@ expenseItems.addEventListener('click', async (e) => {
     // console.log('event target: ', e.target.parentElement.id);
     const id = e.target.parentElement.id;
     try {
-        await axios.delete(`http://localhost:4000/expense/delete-expense/${id}`);
+        await axios.delete(`http://localhost:4000/expense/delete-expense/${id}`, {
+            headers: {
+                'Authorization': localStorage.getItem('token')
+            }
+        });
 
         expenseItems.removeChild(document.getElementById(`${id}`));
         
@@ -64,7 +73,11 @@ function showExpensesOnFrontend(expenses) {
 
 async function fetchExpensesFromBackend() {
     try {
-        const res = await axios.get('http://localhost:4000/expense/get-expense');
+        const res = await axios.get('http://localhost:4000/expense/get-expense', {
+            headers: {
+                'Authorization': localStorage.getItem('token')
+            }
+        });
 
         const expenses = res.data;
         return expenses;

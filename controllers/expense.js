@@ -7,7 +7,7 @@ exports.addExpense = async(req, res, next) => {
 
     try {
         
-        await Expense.create({
+        await req.user.createExpense({
             amount: amount,
             description: description,
             category: category
@@ -21,7 +21,8 @@ exports.addExpense = async(req, res, next) => {
 };
 
 exports.getExpense = (req, res, next) => {
-    Expense.findAll()
+    req.user.getExpenses()
+    // Expense.findAll()
         .then(expenses => {
             res.status(200).json(expenses);
         })
@@ -33,14 +34,15 @@ exports.getExpense = (req, res, next) => {
 exports.deleteExpense = (req, res, next) => {
     const id = req.params.id;
     console.log('id to delete: ', id);
-    Expense.findByPk(id)
-        .then(async (expense) => {
-            try {
-                await expense.destroy();
-                res.status(200).json({success: true, message: 'expense deleted'});    
-            } catch (error) {
-                throw new Error(error);
-            }  
+    // Expense.findByPk(id, {where: {userId: req.user.id}})
+    req.user.getExpenses({where: {id: id}})
+        .then(async (expenses) => {
+            const expense = expenses[0];
+            if(!expense) {
+                return res.status(404).json({success: false, message: 'expense does not belong to the user'});
+            }
+            await expense.destroy();
+            res.status(200).json({success: true, message: 'expense successfully deleted'});
         })
         .catch(err => {
             res.status(500).json(err);

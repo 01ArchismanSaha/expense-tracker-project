@@ -19,6 +19,9 @@ myForm.addEventListener('submit', async (e) => {
             email.value = '';
             password.value = '';
             confirm('User logged in successfully!');
+            
+            localStorage.setItem('token', res.data.token);
+    
             window.location.href = 'tracker.html';
         }
         
