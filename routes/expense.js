@@ -10,6 +10,8 @@ router.post('/add-expense', authenticator.authenticate, expenseController.addExp
 
 router.get('/get-expense', authenticator.authenticate, expenseController.getExpense);
 
+router.get('/get-leaderboard', authenticator.authenticate, expenseController.getLeaderboradData);
+
 router.delete('/delete-expense/:id', authenticator.authenticate, expenseController.deleteExpense);
 
 module.exports = router;

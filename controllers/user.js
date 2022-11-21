@@ -112,7 +112,7 @@ exports.updateTransactionStatus = async (req, res) => {
             })
             .catch(err => {
                 throw new Error(err);
-            })
+            });
         
     } catch (error) {
         console.log(error);
@@ -127,3 +127,22 @@ exports.checkMembership = (req, res) => {
         res.status(400).json({message: 'user does not have Premium Membership'});
     }
 };
+
+exports.getExpansion = (req, res) => {
+    if(req.user.isPremiumUser) {
+        const id = req.params.id;
+
+        User.findByPk(id)
+            .then(user => {
+                return user.getExpenses();
+            })
+            .then(expenses => {
+                res.status(200).json({success: true, expenses: expenses});
+            })
+            .catch(err => {
+                res.status(500).json({success: false, error: err});
+            })
+    } else {
+        res.status(400).json({message: 'user does not have Premium Membership'});
+    }
+}

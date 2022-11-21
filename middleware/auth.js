@@ -2,13 +2,13 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
 exports.authenticate = (req, res, next) => {
-    console.log('req >>>>>', req);
+    // console.log('req >>>>>', req);
     try {
         const token = req.header('Authorization');
-        console.log('token >>>>>>>>', token);
+        // console.log('token >>>>>>>>', token);
 
         const tokenUser = jwt.verify(token, 'archie_jwt_secret_key');
-        console.log('user >>>>>>>', tokenUser);
+        // console.log('user >>>>>>>', tokenUser);
 
         User.findByPk(tokenUser.userId)
             .then(user => {

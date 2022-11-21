@@ -3,6 +3,7 @@ const amount = document.getElementById('amount');
 const description = document.getElementById('description');
 const category = document.getElementById('category');
 const expenseItems = document.getElementById('expense-items');
+const expansionDiv = document.getElementById('expansion');
 
 
 trackerFrom.addEventListener('submit', async(e) => {
@@ -169,9 +170,83 @@ async function checkForPremium() {
 
         if (response.status === 200) {
             applyDarkTheme();
+            addLeaderboard();
         } else {
             throw new Error(response);
         }
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function addLeaderboard() {
+    try {
+        const leaderboard = document.getElementById('leaderboard');
+        const response = await axios.get('http://localhost:4000/expense/get-leaderboard', {
+            headers: {
+                'Authorization': localStorage.getItem('token')
+            }
+        });
+        
+        // console.log('leaderboard data :', response.data);
+        leaderboard.innerHTML = '';
+
+        response.data.forEach(userData => {
+            // console.log(userData);
+            let totalExpense = 0;
+            const user = userData.user;
+            const expenseList = userData.expenses;
+
+            expenseList.forEach(expense => {
+                totalExpense += expense.amount;
+            });
+
+            // console.log(user.name, totalExpense);
+
+            leaderboard.innerHTML += `
+                <li id="${user.id}">${user.name}-${totalExpense}<button>View Details</button></li>
+            `;
+        });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+document.getElementById('leaderboard').onclick = (e) => {
+    e.preventDefault();
+
+    // console.log(e.target.parentElement.id);
+    const userId = e.target.parentElement.id;
+
+    expandExpense(userId);
+
+    expansionDiv.classList.add('active');
+}
+
+document.getElementById('close-list-btn').onclick = (e) => {
+    e.preventDefault();
+    expansionDiv.classList.remove('active');  
+}
+
+async function expandExpense(id) {
+    try {
+        let response = await axios.get(`http://localhost:4000/user/get-expansion/${id}`, {
+            headers: {
+                'Authorization': localStorage.getItem('token')
+            }
+        });
+        // console.log(response.data.expenses);
+        const expenses = response.data.expenses;
+        
+        let expense_ul = document.querySelector('.expense-items');
+        // console.log(expense_ul);
+        expense_ul.innerHTML = '';
+        expenses.forEach(expense => {
+            expense_ul.innerHTML += `
+                <li>${expense.description}-${expense.category}-${expense.amount}</li>
+            `;
+        });
 
     } catch (error) {
         console.log(error);

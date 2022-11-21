@@ -1,4 +1,6 @@
 const Expense = require('../models/expense');
+const User = require('../models/user');
+const { Op } = require('sequelize');
 
 exports.addExpense = async(req, res, next) => {
     const {amount, description, category} = req.body;
@@ -21,6 +23,7 @@ exports.addExpense = async(req, res, next) => {
 };
 
 exports.getExpense = (req, res, next) => {
+    
     req.user.getExpenses()
     // Expense.findAll()
         .then(expenses => {
@@ -47,4 +50,40 @@ exports.deleteExpense = (req, res, next) => {
         .catch(err => {
             res.status(500).json(err);
         });
+};
+
+exports.getLeaderboradData = (req, res, next) => {
+    
+    if(req.user.isPremiumUser === true) {
+        
+        User.findAll({
+            where: {
+                id: {
+                  [Op.not]: req.user.id
+                }
+              }
+        })
+            .then(async (users) => {
+                let leaderboardData = [];
+                try {
+                    for(let i = 0; i < users.length; i ++) {
+                        let userData = {user: users[i]};
+                        let expenses = await users[i].getExpenses();
+                        // console.log(expenses);
+                        userData['expenses'] = expenses;
+                        leaderboardData.push(userData);
+                    }
+                } catch (error) {
+                    throw new Error(error);
+                }
+                console.log(leaderboardData);
+                res.status(200).json(leaderboardData);
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({success: false, error: err});
+            })
+    } else {
+        res.status(403).json({success: false, message: 'user does not premium membership'});
+    }
 };
