@@ -2,6 +2,7 @@ const myForm = document.getElementById('log-in-form');
 // const name = document.getElementById('name');
 const email = document.getElementById('email');
 const password = document.getElementById('password');
+const forgotBtn = document.getElementById('fgt-btn');
 
 myForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -43,3 +44,7 @@ function clearError() {
     const err = document.getElementById('error-text');
     err.innerHTML = '';
 };
+
+forgotBtn.onclick = async (e) => {
+    window.location.href = 'forgot.html';
+}
