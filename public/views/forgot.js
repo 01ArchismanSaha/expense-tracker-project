@@ -7,7 +7,12 @@ form.addEventListener('submit', async (e) => {
     try {
         const email = emailField.value;
         console.log(email);
-        await axios.post('http://localhost:4000/user/password/forgotpassword', {email: email});
+        let res = await axios.post('http://localhost:4000/password/forgotpassword', {email: email});
+
+        if(res.status === 200) {
+            confirm(`${res.data.message}`);
+            window.location.href = 'login.html';
+        }
 
     } catch (error) {
         console.log(error);

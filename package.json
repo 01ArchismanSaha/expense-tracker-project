@@ -15,6 +15,8 @@
     "node-modules": "^0.0.1",
     "nodemon": "^2.0.20",
     "razorpay": "^2.8.3",
-    "sequelize": "^6.25.5"
+    "sequelize": "^6.25.5",
+    "sib-api-v3-sdk": "^8.4.2",
+    "uuid": "^9.0.0"
   }
 }

@@ -9,10 +9,10 @@ myForm.addEventListener('submit', async (e) => {
 
     try {
         const res = await axios.post('http://localhost:4000/user/login', 
-        {
-            email: email.value, 
-            password: password.value
-        }
+            {
+                email: email.value, 
+                password: password.value
+            }
         );
         console.log('LOGIN RESPONSE: ', res);
         if(res.status === 200) {
