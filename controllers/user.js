@@ -124,7 +124,7 @@ exports.checkMembership = (req, res) => {
     if(req.user.isPremiumUser === true) {
         res.status(200).json({message: 'user has Premium Membership'});
     } else {
-        res.status(400).json({message: 'user does not have Premium Membership'});
+        res.status(404).json({message: 'user does not have Premium Membership'});
     }
 };
 

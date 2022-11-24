@@ -171,8 +171,7 @@ async function checkForPremium() {
         if (response.status === 200) {
             applyDarkTheme();
             addLeaderboard();
-        } else {
-            throw new Error(response);
+            document.getElementById('downloadexpense').style.display = "block";
         }
 
     } catch (error) {
@@ -182,6 +181,7 @@ async function checkForPremium() {
 
 async function addLeaderboard() {
     try {
+        document.getElementById('leaderboard-div').style.display = "block";
         const leaderboard = document.getElementById('leaderboard');
         const response = await axios.get('http://localhost:4000/expense/get-leaderboard', {
             headers: {
@@ -252,3 +252,28 @@ async function expandExpense(id) {
         console.log(error);
     }
 }
+
+function download(){
+    axios.get('http://localhost:4000/user/download', { headers: {"Authorization" : localStorage.getItem('token')} })
+    .then((response) => {
+        if(response.status === 201){
+            //the bcakend is essentially sending a download link
+            //  which if we open in browser, the file would download
+            var a = document.createElement("a");
+            a.href = response.data.fileUrl;
+            a.download = 'myexpense.csv';
+            a.click();
+        } else {
+            throw new Error(response.data.message)
+        }
+
+    })
+    .catch((err) => {
+        logErrorToUser(err);  
+    });
+}
+
+function logErrorToUser(error) {
+    const err = document.getElementById('error-text');
+    err.innerHTML = error.message;
+};
