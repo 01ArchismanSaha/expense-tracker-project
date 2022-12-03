@@ -128,7 +128,7 @@ document.getElementById('rzp-button1').onclick = async function (e) {
                     })
                     .then(() => {
                         alert('You are a Premium User Now');
-                        applyDarkTheme();
+                        checkForPremium();
                     }).catch(() => {
                         alert('Something went wrong. Try Again!!!');
                     })
@@ -171,7 +171,9 @@ async function checkForPremium() {
         if (response.status === 200) {
             applyDarkTheme();
             addLeaderboard();
+            showPreviousDownloads();
             document.getElementById('downloadexpense').style.display = "block";
+            document.getElementById('prevDownloads-div').style.display = "block";
         }
 
     } catch (error) {
@@ -208,6 +210,28 @@ async function addLeaderboard() {
                 <li id="${user.id}">${user.name}-${totalExpense}<button>View Details</button></li>
             `;
         });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function showPreviousDownloads() {
+    try {
+        const downloads = document.getElementById('downloads');
+        const response = await axios.get('http://localhost:4000/user/get-downloads', {
+            headers: {
+                'Authorization': localStorage.getItem('token')
+            }
+        });
+        // console.log('response---->',response);
+        downloads.innerHTML = '';
+
+        response.data.downloads.forEach(download => {
+            downloads.innerHTML += `<li>
+                <a href="${download.fileUrl}">${download.date}</a>
+            </li>`;
+        });
+
     } catch (error) {
         console.log(error);
     }
@@ -254,7 +278,11 @@ async function expandExpense(id) {
 }
 
 function download(){
-    axios.get('http://localhost:4000/user/download', { headers: {"Authorization" : localStorage.getItem('token')} })
+    axios.get('http://localhost:4000/user/download', 
+        { 
+            headers: {"Authorization" : localStorage.getItem('token')} 
+        }
+    )
     .then((response) => {
         if(response.status === 201){
             //the bcakend is essentially sending a download link

@@ -1,5 +1,7 @@
 const User = require('../models/user');
 const PremiumUser = require('../models/premium-user');
+const Download = require('../models/download');
+
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { regexpToText } = require('nodemon/lib/utils');
@@ -142,6 +144,20 @@ exports.getExpansion = (req, res) => {
             .catch(err => {
                 res.status(500).json({success: false, error: err});
             })
+    } else {
+        res.status(400).json({message: 'user does not have Premium Membership'});
+    }
+}
+
+exports.getDownloads = async (req, res) => {
+    if(req.user.isPremiumUser) {
+        try {
+            const downloads = await req.user.getDownloads();
+            console.log(downloads);
+            res.status(200).json({downloads: downloads, success: true});
+        } catch (error) {
+            res.status(500).json({error: error, success: false});
+        }
     } else {
         res.status(400).json({message: 'user does not have Premium Membership'});
     }

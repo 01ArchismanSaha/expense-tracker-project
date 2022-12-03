@@ -27,3 +27,12 @@
     display: flex;
     justify-content: space-between;
 }
+
+body {
+    position: relative;
+}
+
+#prevDownloads-div {
+    position: fixed;
+    bottom: 0%;
+}
