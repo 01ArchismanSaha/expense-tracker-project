@@ -4,8 +4,6 @@ const User = require('../models/user');
 const { Op } = require('sequelize');
 const AWS= require('aws-sdk');
 
-const ITEMS_PER_PAGE = 4;
-
 exports.addExpense = async(req, res, next) => {
     const {amount, description, category} = req.body;
     
@@ -30,6 +28,9 @@ exports.getExpense = (req, res, next) => {
     const page = +req.query.page;
     let totalItems;
     let lastPage;
+
+    const ITEMS_PER_PAGE = +req.header('rows');
+    console.log('items per page------> ', ITEMS_PER_PAGE)
     
     req.user.getExpenses({
         offset: (page - 1)*(ITEMS_PER_PAGE), 
@@ -38,6 +39,7 @@ exports.getExpense = (req, res, next) => {
     // Expense.findAll()
         .then(async (limitedExpenses) => {
             // res.status(200).json(limitedExpenses);
+            console.log('limited expenses----->', limitedExpenses);
             totalItems = await Expense.count({where: {userId: req.user.id}});
 
             lastPage = Math.ceil(totalItems / ITEMS_PER_PAGE);
@@ -57,6 +59,7 @@ exports.getExpense = (req, res, next) => {
             })
         })
         .catch(err => {
+            console.log(err);
             res.status(500).json({success: false, message: err});
         });
 };

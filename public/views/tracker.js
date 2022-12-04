@@ -86,9 +86,15 @@ function showExpensesOnFrontend(expenses) {
 
 async function fetchExpensesFromBackend(pageNo) {
     try {
+        let rows = localStorage.getItem('rows');
+        if(!rows) {
+            rows = 5;
+        }
+
         const response = await axios.get(`http://localhost:4000/expense/get-expense/?page=${pageNo}`, {
             headers: {
-                'Authorization': localStorage.getItem('token')
+                'Authorization': localStorage.getItem('token'),
+                'rows': rows
             }
         });
 
@@ -364,4 +370,13 @@ document.querySelector('.pagination').onclick = async (e) => {
     showExpensesOnFrontend(expenses);
 
     addPagination(response);
+}
+
+document.getElementById('row-selector').onchange = (e) => {
+    
+    e.preventDefault();
+    
+    localStorage.setItem('rows', e.target.value);
+
+    window.location.reload();
 }
