@@ -75,7 +75,7 @@ exports.logUser = (req, res, next) => {
 
 exports.makePremium = async (req, res, next) => {
     try {
-        var instance = new Razorpay({ key_id: process.env.KEY_ID, key_secret: process.env.KEY_SECRET });
+        var instance = new Razorpay({ key_id: process.env.RZP_KEY_ID, key_secret: process.env.RZP_KEY_SECRET });
     
         let order = await instance.orders.create({
           amount: 50000,
