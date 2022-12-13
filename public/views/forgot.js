@@ -1,5 +1,6 @@
 const form = document.getElementById('forgot-password-form');
 const emailField = document.getElementById('email');
+const baseUrl = `http://localhost:4000`;
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -7,7 +8,7 @@ form.addEventListener('submit', async (e) => {
     try {
         const email = emailField.value;
         console.log(email);
-        let res = await axios.post(`http://localhost:4000/password/forgotpassword`, {email: email});
+        let res = await axios.post(`${baseUrl}/password/forgotpassword`, {email: email});
 
         if(res.status === 200) {
             confirm(`${res.data.message}`);

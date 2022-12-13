@@ -1,4 +1,5 @@
 const myForm = document.getElementById('sign-up-form');
+const baseUrl = `http://localhost:4000`;
 
 myForm.addEventListener('submit', async(e) => {
     e.preventDefault();
@@ -8,14 +9,14 @@ myForm.addEventListener('submit', async(e) => {
     const password = document.getElementById('password');
 
     try {
-        const res = await axios.post(`http://localhost:4000/user/sign-up`, 
+        const res = await axios.post(`${baseUrl}/user/sign-up`, 
         {
             name: name.value, 
             email: email.value, 
             password: password.value
         }
         );
-        console.log('SIGN UP RESPONSE: ', res);
+        // console.log('SIGN UP RESPONSE: ', res);
         if(res.status === 200){
             name.value = '';
             email.value = '';

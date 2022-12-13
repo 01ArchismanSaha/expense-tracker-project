@@ -1,6 +1,7 @@
 const express  = require('express');
 const path = require('path');
 const fs = require('fs');
+const https = require('https');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const compression = require('compression');
@@ -44,6 +45,9 @@ const accessLogStream = fs.createWriteStream(
     {flags: 'a'}
 );
 
+// const certificate = fs.readFileSync('server.cert');
+// const privateKey = fs.readFileSync('server.key');
+
 app.use(helmet());
 app.use(compression());
 app.use(morgan('combined', {stream: accessLogStream}));
@@ -57,6 +61,8 @@ app.use('/password', passwordRoutes);
 // data_base.sync({force: true})
 data_base.sync()
     .then(() => {
+        // https.createServer({key: privateKey, cert: certificate}, app)
+        //     .listen(process.env.PORT || 4000);
         app.listen(process.env.PORT || 4000);
     })
     .catch(err => console.log(err));

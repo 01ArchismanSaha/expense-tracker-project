@@ -4,14 +4,14 @@ const description = document.getElementById('description');
 const category = document.getElementById('category');
 const expenseItems = document.getElementById('expense-items');
 const expansionDiv = document.getElementById('expansion');
-
+const baseUrl = `http://localhost:4000`;
 
 trackerFrom.addEventListener('submit', async(e) => {
     e.preventDefault();
     console.log('frontend: ',amount.value, description.value, category.value);
 
     try {   
-        await axios.post(`http://localhost:4000/expense/add-expense`, {
+        await axios.post(`${baseUrl}/expense/add-expense`, {
             amount: amount.value,
             description: description.value,
             category: category.value
@@ -53,7 +53,7 @@ expenseItems.addEventListener('click', async (e) => {
     // console.log('event target: ', e.target.parentElement.id);
     const id = e.target.parentElement.id;
     try {
-        await axios.delete(`http://localhost:4000/expense/delete-expense/${id}`, {
+        await axios.delete(`${baseUrl}/expense/delete-expense/${id}`, {
             headers: {
                 'Authorization': localStorage.getItem('token')
             }
@@ -91,7 +91,7 @@ async function fetchExpensesFromBackend(pageNo) {
             rows = 5;
         }
 
-        const response = await axios.get(`http://localhost:4000/expense/get-expense/?page=${pageNo}`, {
+        const response = await axios.get(`${baseUrl}/expense/get-expense/?page=${pageNo}`, {
             headers: {
                 'Authorization': localStorage.getItem('token'),
                 'rows': rows
@@ -112,7 +112,7 @@ document.getElementById('rzp-button1').onclick = async function (e) {
     try {
         let token = localStorage.getItem('token');
 
-        let response = await axios.post(`http://localhost:4000/user/purchase-premium`, {}, {
+        let response = await axios.post(`${baseUrl}/user/purchase-premium`, {}, {
             headers: {
                 'Authorization': token
             }
@@ -134,7 +134,7 @@ document.getElementById('rzp-button1').onclick = async function (e) {
             // This handler function will handle the success payment
             "handler": function (response) {
                 console.log(response);
-                axios.post(`http://localhost:4000/user/purchase-premium/update-transaction-status`,
+                axios.post(`${baseUrl}/user/purchase-premium/update-transaction-status`,
                     {
                         order_id: options.order_id,
                         payment_id: response.razorpay_payment_id,
@@ -178,7 +178,7 @@ function applyDarkTheme() {
 async function checkForPremium() {
     try {
         const token = localStorage.getItem('token');
-        const response = await axios.post(`http://localhost:4000/user/check-membership`, {}, {
+        const response = await axios.post(`${baseUrl}/user/check-membership`, {}, {
             headers: {
                 'Authorization': token
             }
@@ -201,7 +201,7 @@ async function addLeaderboard() {
     try {
         document.getElementById('leaderboard-div').style.display = "block";
         const leaderboard = document.getElementById('leaderboard');
-        const response = await axios.get(`http://localhost:4000/expense/get-leaderboard`, {
+        const response = await axios.get(`${baseUrl}/expense/get-leaderboard`, {
             headers: {
                 'Authorization': localStorage.getItem('token')
             }
@@ -234,7 +234,7 @@ async function addLeaderboard() {
 async function showPreviousDownloads() {
     try {
         const downloads = document.getElementById('downloads');
-        const response = await axios.get(`http://localhost:4000/user/get-downloads`, {
+        const response = await axios.get(`${baseUrl}/user/get-downloads`, {
             headers: {
                 'Authorization': localStorage.getItem('token')
             }
@@ -271,7 +271,7 @@ document.getElementById('close-list-btn').onclick = (e) => {
 
 async function expandExpense(id) {
     try {
-        let response = await axios.get(`http://localhost:4000/user/get-expansion/${id}`, {
+        let response = await axios.get(`${baseUrl}/user/get-expansion/${id}`, {
             headers: {
                 'Authorization': localStorage.getItem('token')
             }
@@ -294,7 +294,7 @@ async function expandExpense(id) {
 }
 
 function download(){
-    axios.get(`http://localhost:4000/user/download`, 
+    axios.get(`${baseUrl}/user/download`, 
         { 
             headers: {"Authorization" : localStorage.getItem('token')} 
         }

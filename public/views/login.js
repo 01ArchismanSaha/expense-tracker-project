@@ -3,12 +3,13 @@ const myForm = document.getElementById('log-in-form');
 const email = document.getElementById('email');
 const password = document.getElementById('password');
 const forgotBtn = document.getElementById('fgt-btn');
+const baseUrl = `http://localhost:4000`;
 
 myForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     try {
-        const res = await axios.post(`http://localhost:4000/user/login`, 
+        const res = await axios.post(`${baseUrl}/user/login`, 
             {
                 email: email.value, 
                 password: password.value
