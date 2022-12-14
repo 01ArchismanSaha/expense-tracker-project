@@ -4,7 +4,7 @@ const description = document.getElementById('description');
 const category = document.getElementById('category');
 const expenseItems = document.getElementById('expense-items');
 const expansionDiv = document.getElementById('expansion');
-const baseUrl = `http://localhost:4000`;
+const baseUrl = `http://54.209.222.23:3000`;
 
 trackerFrom.addEventListener('submit', async(e) => {
     e.preventDefault();

@@ -3,7 +3,7 @@ const myForm = document.getElementById('log-in-form');
 const email = document.getElementById('email');
 const password = document.getElementById('password');
 const forgotBtn = document.getElementById('fgt-btn');
-const baseUrl = `http://localhost:4000`;
+const baseUrl = `http://54.209.222.23:3000`;
 
 myForm.addEventListener('submit', async (e) => {
     e.preventDefault();

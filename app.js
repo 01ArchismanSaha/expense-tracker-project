@@ -56,6 +56,11 @@ app.use('/user', userRoutes);
 app.use('/expense', expenseRoutes);
 app.use('/password', passwordRoutes);
 
+app.use((req, res) => {
+    console.log('url-------->', req.url);
+    res.sendFile(path.join(__dirname, `public/views/${req.url}`));
+})
+
 // console.log(process.env.NODE_ENV);
 
 // data_base.sync({force: true})
@@ -63,6 +68,6 @@ data_base.sync()
     .then(() => {
         // https.createServer({key: privateKey, cert: certificate}, app)
         //     .listen(process.env.PORT || 4000);
-        app.listen(process.env.PORT || 4000);
+        app.listen(3000);
     })
     .catch(err => console.log(err));

@@ -1,6 +1,6 @@
 const form = document.getElementById('forgot-password-form');
 const emailField = document.getElementById('email');
-const baseUrl = `http://localhost:4000`;
+const baseUrl = `http://54.209.222.23:3000`;
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();

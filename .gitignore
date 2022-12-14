@@ -3,4 +3,3 @@ node_modules
 access.log
 server.cert
 server.key
-public
