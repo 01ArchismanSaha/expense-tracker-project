@@ -1,8 +1,8 @@
 const express  = require('express');
 const path = require('path');
 const fs = require('fs');
-const https = require('https');
-const helmet = require('helmet');
+// const https = require('https');
+// const helmet = require('helmet');
 const morgan = require('morgan');
 const compression = require('compression');
 const app = express();
@@ -48,7 +48,7 @@ const accessLogStream = fs.createWriteStream(
 // const certificate = fs.readFileSync('server.cert');
 // const privateKey = fs.readFileSync('server.key');
 
-app.use(helmet());
+// app.use(helmet());
 app.use(compression());
 app.use(morgan('combined', {stream: accessLogStream}));
 
@@ -57,7 +57,7 @@ app.use('/expense', expenseRoutes);
 app.use('/password', passwordRoutes);
 
 app.use((req, res) => {
-    console.log('url-------->', req.url);
+    // console.log('url-------->', req.url);
     res.sendFile(path.join(__dirname, `public/views/${req.url}`));
 })
 
